@@ -242,7 +242,7 @@ func (config Config) Run() {
 func GetTSToken(tspsServer string, tspsPort string, tsUser string, tsUserPw string, tsTenant string) string {
 	authToken := "undefined"
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-	tokenUrl := "https://" + tspsServer + ":" + tspsPort + "/tsws/api/v10.1/token"
+	tokenUrl := "http://" + tspsServer + ":" + tspsPort + "/tsws/api/v10.1/token"
 	postData := map[string]string{"username": tsUser, "password": tsUserPw, "tenantName": tsTenant}
 	postDataJson, err := json.Marshal(postData)
 
@@ -271,7 +271,7 @@ func GetTSToken(tspsServer string, tspsPort string, tsUser string, tsUserPw stri
 
 func VerifyTSToken(token string, tspsServer string, tspsPort string) bool {
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-	tokenUrl := "https://" + tspsServer + ":" + tspsPort + "/tsws/api/v10.1/token"
+	tokenUrl := "http://" + tspsServer + ":" + tspsPort + "/tsws/api/v10.1/token"
 	req, err := http.NewRequest("GET", tokenUrl, nil)
 	if err != nil {
 		log.Fatal("Error reading request. ", err)
@@ -305,7 +305,7 @@ func VerifyTSToken(token string, tspsServer string, tspsPort string) bool {
 
 func SendEventToTS(token string, tsimServer string, tsimPort string, tsCell string, eventData []*TSEvent) bool {
 	eventSendState := false
-	eventUrl := "https://" + tsimServer + ":" + tsimPort + "/bppmws/api/Event/create?routingId=" + tsCell
+	eventUrl := "http://" + tsimServer + ":" + tsimPort + "/bppmws/api/Event/create?routingId=" + tsCell
 	eventJSON, err := json.Marshal(eventData)
 	if err != nil {
 		log.Fatal(err)
